@@ -11,8 +11,15 @@ Run order: load `transfer_funds.sql`, then `01_commit_rollback.sql`, then the tw
 ## Concurrency control used
 Pessimistic row locking (`FOR UPDATE`) with deterministic lock ordering; REPEATABLE READ plus retry as an alternative.
 
-## Evidence to add (your own screenshots)
-1. Balances before/after COMMIT. 2. Rollback leaving balances unchanged. 3. Lost update result (800 instead of 500). 4. Fixed result (500). 5. Deadlock error message. 6. Reconciliation query output.
 
-## Short analysis (write in your own words)
-Explain when you would choose locking versus snapshot isolation + retry for a banking workload, and the throughput cost of locking hot accounts.
+## Evidence 
+1. 01-commit-success: balances before and after a committed transfer
+2. 02-rollback-failed: failed transfer rolled back, balances unchanged
+3. 03-lost-update-problem: lost update (800 instead of 500)
+4. 04-lost-update-fixed: fixed with SELECT ... FOR UPDATE (500)
+5. 05-read-committed: balance changes inside one transaction (5000 then 6000)
+6. 06-repeatable-read: balance stays 5000 inside the transaction
+7. 07-deadlock: "deadlock detected" error
+
+## Analysis
+The transfer_funds function groups the debit, credit and ledger entries into one transaction, so either all of it happens or none of it does (atomicity). The lost update showed that two sessions working from the same old balance can overwrite each other. Locking the row with FOR UPDATE makes the second session wait and read the new balance. REPEATABLE READ gives a stable snapshot inside a transaction, which prevents the balance changing between two reads. The deadlock happened because the two sessions locked the accounts in opposite order. The transfer_funds function avoids this by always locking accounts in order of account_id.
