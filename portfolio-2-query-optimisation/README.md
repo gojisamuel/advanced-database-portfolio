@@ -20,10 +20,10 @@ psql paywise -c "EXPLAIN (ANALYZE, BUFFERS) <query>"   # AFTER indexes -> save a
 ## Performance analysis (fill in with YOUR numbers)
 | Query | Before (ms) | After (ms) | Plan change |
 |---|---|---|---|
-| Q1 | | | |
-| Q2 | | | |
-| Q3 | | | |
-| Q4 | | | |
-| Q5 | | | |
+| Q1 |262.5 | |Seq Scan |
+| Q2 | 55.6| | Seq Scan|
+| Q3 | 839.5| | Seq Scan + Hash Joins|
+| Q4 |700.2 | | Seq Scan + Hash Joins|
+| Q5 | 160.0| | Seq Scan|
 
 Write 1 short paragraph per query: what the plan was (Seq Scan / Index Scan / Bitmap), why it changed, and one case where an index did NOT help and why (Q4). Mention the write-cost trade-off of extra indexes.
