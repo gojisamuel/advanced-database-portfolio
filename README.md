@@ -18,4 +18,9 @@ createdb paywise
 psql paywise -f portfolio-1-database-design/schema.sql
 psql paywise -f portfolio-2-query-optimisation/seed.sql
 ```
-Each portfolio folder has its own README with run steps and a "Results" section where you paste your own outputs/screenshots.
+Each portfolio folder has its own README explaining what was implemented and tested, plus a `screenshot` folder with the evidence (query plans, transaction tests, replica set status and so on).
+
+## Notes
+- All five portfolios use the same case study, PayWise, a simulated digital bank.
+- Work was committed progressively throughout the project.
+- The 2-3 page summary, individual reflection and AI Use Declaration are in the `docs` folder and in the LMS submission.
