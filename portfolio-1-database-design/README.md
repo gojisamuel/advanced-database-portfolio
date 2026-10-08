@@ -76,4 +76,10 @@ erDiagram
 - **Deliberate denormalisation:** `accounts.balance` and `ledger_entries.balance_after` are derivable from the ledger, but are stored for read performance. Consistency is enforced inside a transaction (Portfolio 3) and can be audited with a reconciliation query.
 
 ## Results / evidence
-Paste your screenshots here: `\dt`, `\d accounts`, and the rendered ER diagram.
+**Tables and the accounts table definition** (`\dt` and `\d accounts`): five tables were created, and the accounts table shows its primary key, unique constraint on account_number, CHECK constraints (balance >= 0, allowed types and statuses), the foreign key to customers, and the balance audit trigger.
+
+![Tables and accounts table](screenshot/01-tables-and-accounts.png)
+
+**ER diagram:** the five tables and the relationships between them.
+
+![ER diagram](screenshot/02-er-diagram.png)
